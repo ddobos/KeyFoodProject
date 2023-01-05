@@ -12,11 +12,11 @@ import utils.BaseTest;
 
 public class Homework30 extends BaseTest {
 	
-//	@Parameters({"user", "pass"})
+	@Parameters({"user", "pass"})
 	@Test(priority = 1)
-	public void homeWorkTest1() {
-		String user = "denis"; 
-		String pass = "denis@123";
+	public void homeWorkTest1(String user, String pass) {
+//		String user = "denis"; 
+//		String pass = "denis@123";
 		MenuPage menu = new MenuPage(driver);
 		MyAccountPage myAccount = new MyAccountPage(driver);
 		
@@ -28,11 +28,11 @@ public class Homework30 extends BaseTest {
 		menu.click(menu.suggestionProduct);
 		
 		ProductPage productPage = new ProductPage(driver);
-		productPage.click(productPage.addCart);
+		productPage.click(productPage.addToCartBtn);
 		
 		SoftAssert sa= new SoftAssert();
 		
-		sa.assertTrue(productPage.checkElementIsDisplayed(productPage.addCartShowMessage));
+		sa.assertTrue(productPage.checkElementIsDisplayed(productPage.addToCartShowMessage));
 		menu.click(menu.cartLink);
 		
 		CartPage cartPage = new CartPage(driver);

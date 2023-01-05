@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -14,13 +18,29 @@ import org.testng.TestException;
 
 public class SeleniuWrappers extends BaseTest {
 	
+//	WebDriver driver;
+	
+	public SeleniuWrappers(WebDriver driver) {
+		this.driver = driver;
+	}
+	
+	public void sendEnter() {
+		try {
+			Log.info("calling method <send Enter>");
+			Actions action = new Actions(driver);
+			action.sendKeys(Keys.ENTER).perform();
+		}catch(Exception e) {
+			Log.error(e.getMessage());
+		}
+	}
+	
 	public WebElement getWebElement(By locator) {
 		waitForELementToBeVisible(locator);
 		return driver.findElement(locator);
 	}
 	
 	public List<WebElement> getWebElements(By locator) {
-		waitForELementToBeVisible(locator);
+//		waitForELementToBeVisible(locator);
 		return driver.findElements(locator);
 	}
 
@@ -31,12 +51,17 @@ public class SeleniuWrappers extends BaseTest {
 //			wait.until(ExpectedConditions.elementToBeClickable(locator));
 			waitForElementToBeClicable(locator);
 			WebElement element = driver.findElement(locator);
-			Log.info("caled method <Click()> on element : " + element.getAttribute("outherHTML"));
+			Log.info("caled method <Click()> on element : " + element.getAttribute("outerHTML"));
 			element.click();
 		} catch (NoSuchElementException e) {
 			Log.error("Element not found on methode <Click()> after wait specified sec");
 			Log.error(e.getMessage());
 			throw new TestException(e.getMessage());
+		}catch (StaleElementReferenceException e) {
+			waitForElementToBeClicable(locator);
+			WebElement element = driver.findElement(locator);
+			Log.info("caled method <Click()> on element : " + element.getAttribute("outerHTML"));
+			element.click();
 		}
 	}
 
@@ -64,7 +89,7 @@ public class SeleniuWrappers extends BaseTest {
 		}
 	}
 	
-	public static boolean checkElementIsDisplayed(By locator) {
+	public boolean checkElementIsDisplayed(By locator) {
 		return driver.findElement(locator).isDisplayed();
 	}
 	
@@ -73,9 +98,9 @@ public class SeleniuWrappers extends BaseTest {
 			
 			waitForELementToBeVisible(locator);
 			WebElement element = driver.findElement(locator);
-			Log.info("Called clear on methode <sendKeys()> on element " + element.getAttribute("outherHTML"));
+			Log.info("Called clear on methode <sendKeys()> on element " + element.getAttribute("outerHTML"));
 			element.clear();
-			Log.info("Called sendKeys on methode <sendKeys()> on element " + element.getAttribute("outherHTML"));
+			Log.info("Called sendKeys on methode <sendKeys()> on element " + element.getAttribute("outerHTML"));
 			element.sendKeys(textToBeSend);
 		}catch(NoSuchElementException e) {
 			Log.error("Failed method <sendKeys()> with error " + e.getMessage());

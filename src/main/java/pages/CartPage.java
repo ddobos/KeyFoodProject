@@ -7,10 +7,9 @@ import utils.SeleniuWrappers;
 
 public class CartPage extends SeleniuWrappers {
 	
-	WebDriver driver;
 	
 	public CartPage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 	}
 	
 	public By plusProduct = By.cssSelector("div[class*='plus']");
@@ -19,5 +18,11 @@ public class CartPage extends SeleniuWrappers {
 	public By subTotalProduct = By.cssSelector("td[class*='subtotal'] span[class*='amount']>bdi");
 	public By quantityProduct = By.cssSelector("input[id*='quantity']");
 	public By proceedButton = By.linkText("Proceed to checkout");
+	
+	public By totalPrice = By.cssSelector("td[data-title='Total'] span[class*='woocommerce-Price-amount']");
+	
+	public double getTotalPrice() {
+		return Double.parseDouble(driver.findElement(totalPrice).getText().substring(1));
+	}
 	
 }

@@ -7,10 +7,10 @@ import utils.SeleniuWrappers;
 
 public class MyAccountPage extends SeleniuWrappers {
 	
-	public WebDriver driver;
+//	public WebDriver driver;
 	
 	public MyAccountPage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 	}
 	
 	public By userNameField = By.id("username");

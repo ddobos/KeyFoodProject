@@ -18,15 +18,17 @@ import com.google.common.io.Files;
 
 public class BaseTest extends Driver {
 
-	public static WebDriver driver;
+	public WebDriver driver;
+	public BasePage app;
 
-//	@Parameters({"browser", "url"})
+	@Parameters({"browser", "url"})
 	@BeforeClass(alwaysRun = true)
 	public void setup() {
 		String browser = "chrome";
 		String url ="https://keyfood.ro/";
 		driver = initDriver(browser);
 		driver.get(url);
+		app = new BasePage(driver);
 	}
 
 	@AfterClass

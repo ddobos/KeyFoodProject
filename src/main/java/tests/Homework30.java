@@ -4,51 +4,47 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import pages.CartPage;
-import pages.MenuPage;
-import pages.MyAccountPage;
 import pages.ProductPage;
 import utils.BaseTest;
 
 public class Homework30 extends BaseTest {
-	
-	@Parameters({"user", "pass"})
+
+	@Parameters({ "user", "pass" })
 	@Test(priority = 1)
 	public void homeWorkTest1(String user, String pass) {
-//		String user = "denis"; 
-//		String pass = "denis@123";
-		MenuPage menu = new MenuPage(driver);
-		MyAccountPage myAccount = new MyAccountPage(driver);
-		
-		menu.click(menu.myAccountLink);
-		myAccount.LoginInUp(user, pass);
-		
+
+		app.menu.click(app.menu.myAccountLink);
+		app.myAccountPage.LoginInUp(user, pass);
+
 		String findProduct = "Coconut";
-		menu.sendKeys(menu.searchField, findProduct);
-		menu.click(menu.suggestionProduct);
-		
+		app.sendKeys(app.menu.searchField, findProduct);
+		app.click(app.menu.suggestionProduct);
+
 		ProductPage productPage = new ProductPage(driver);
 		productPage.click(productPage.addToCartBtn);
-		
-		SoftAssert sa= new SoftAssert();
-		
+
+		SoftAssert sa = new SoftAssert();
+
 		sa.assertTrue(productPage.checkElementIsDisplayed(productPage.addToCartShowMessage));
-		menu.click(menu.cartLink);
+		app.click(app.menu.cartLink);
+
+		double pricePerProduct = Double.parseDouble(app.cartPage.getWebElement(app.cartPage.priceProduct).getText().replace('$', ' '));
+		int quantity = Integer.parseInt(app.cartPage.getWebElement(app.cartPage.quantityProduct).getAttribute("value"));
 		
-		CartPage cartPage = new CartPage(driver);
-		double price = Double.parseDouble(cartPage.getWebElement(cartPage.priceProduct).getText().replace('$', ' '));
-		System.out.println(price);
-		int quantity = Integer.parseInt(cartPage.getWebElement(cartPage.quantityProduct).getAttribute("value"));
-		System.out.println(quantity);
-		cartPage.click(cartPage.plusProduct);
-		sa.assertTrue(++quantity == Integer.parseInt(cartPage.getWebElement(cartPage.quantityProduct).getAttribute("value")));
-		System.out.println(Integer.parseInt(cartPage.getWebElement(cartPage.quantityProduct).getAttribute("value")));
-		sa.assertTrue(quantity * price == Double.parseDouble(cartPage.getWebElement(cartPage.subTotalProduct).getText().replace('$', ' ')));
-		System.out.println("SubTotal"+(cartPage.getWebElement(cartPage.subTotalProduct).getText()));
-		System.out.println("Check SubTotal" + quantity * price);
+		app.productPage.increaseProductQty(1);
+		quantity++;
+		
+		sa.assertTrue( quantity == Integer.parseInt(app.cartPage.getWebElement(app.cartPage.quantityProduct).getAttribute("value")));
+		app.waitForElementToBeUnclicable(app.cartPage.updateCartBtn);
+		sa.assertTrue(quantity * pricePerProduct == Double.parseDouble(app.cartPage.getWebElement(app.cartPage.subTotalProduct).getText().replace('$', ' ')));
+		app.click(app.cartPage.proceedButton);
+		
+		app.click(app.checkOutPage.termAndConCheckBox);
+		app.checkOutPage.completeBillingInfo();
+		app.click(app.checkOutPage.placeOrderBtn);
+		sa.assertTrue(driver.findElement(app.checkOutPage.receivedMsg).getText().contains("Your order has been received."));
+		sa.assertTrue(driver.getCurrentUrl().contains(driver.findElement(app.checkOutPage.receivedOrderNumber).getText()));
 		sa.assertAll();
-		cartPage.click(cartPage.minusProduct);
-		cartPage.click(cartPage.proceedButton);
 	}
 
 }

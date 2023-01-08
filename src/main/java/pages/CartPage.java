@@ -19,6 +19,8 @@ public class CartPage extends SeleniuWrappers {
 	public By quantityProduct = By.cssSelector("input[id*='quantity']");
 	public By proceedButton = By.linkText("Proceed to checkout");
 	
+	public By updateCartBtn = By.name("update_cart");
+	
 	public By totalPrice = By.cssSelector("td[data-title='Total'] span[class*='woocommerce-Price-amount']");
 	
 	public double getTotalPrice() {

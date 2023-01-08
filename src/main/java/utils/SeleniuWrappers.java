@@ -77,6 +77,18 @@ public class SeleniuWrappers extends BaseTest {
 		}
 	}
 	
+	public void waitForElementToBeUnclicable(By locator) {
+		try {
+			Log.info("Called methos <WaitForElementToBeClicable()> on element with locator : " + locator);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+			wait.until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(locator)));
+		}catch(NoSuchElementException e) {
+			Log.error("Element not found on methode <WaitForElementToBeDisappear()()> after wait specified sec");
+			Log.error(e.getMessage());
+			throw new TestException(e.getMessage());
+		}
+	}
+	
 	public void waitForELementToBeVisible(By locator) {
 		try {
 			Log.info("Called methos <WaitForElementToVisible()> on element with locator : " + locator);

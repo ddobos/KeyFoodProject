@@ -18,6 +18,9 @@ public class ProductPage extends SeleniuWrappers {
 	public By addToCartShowMessage = By.cssSelector("div[role='alert']");
 	public By increaseQtyBtn = By.xpath("(//i[@class='klbth-icon-plus'])[1]");
 	public By salePrice = By.cssSelector("p[class='price'] ins>span[class*='amount']");
+	public String producthHrefIndentificator = "div[class*='type-product'] a[href*='%s']";
+	public By addToWishListButton = By.cssSelector("div[class='product-actions'] a[aria-label='Add to Wishlist']");
+	public By closeAddToWishlistButton = By.cssSelector("button[class*='button_close']");
 	
 	public double getProducSalePrice() {
 		String price = driver.findElement(salePrice).getText().replace("$", "");
@@ -32,6 +35,11 @@ public class ProductPage extends SeleniuWrappers {
 	
 	public String getAddedToCartAlertMessage() {
 		return driver.findElement(addToCartShowMessage).getText().replace("View cart", "").substring(1);
+	}
+	
+	public void clickProductByName(String productName) {
+		String locator = String.format(producthHrefIndentificator, productName);
+		click(By.cssSelector(locator));
 	}
 	
 }

@@ -1,5 +1,8 @@
 package tests;
 
+import java.util.List;
+
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -45,6 +48,27 @@ public class Homework30 extends BaseTest {
 		sa.assertTrue(driver.findElement(app.checkOutPage.receivedMsg).getText().contains("Your order has been received."));
 		sa.assertTrue(driver.getCurrentUrl().contains(driver.findElement(app.checkOutPage.receivedOrderNumber).getText()));
 		sa.assertAll();
+	}
+	
+	@Test(priority = 2)
+	public void homeWorkTest2() {
+		app.click(app.menu.blogLink);
+		List<WebElement> listButtons = driver.findElements(app.blogPage.readMoreBtn);
+		for (int i = 0; i < listButtons.size(); i++) {
+			listButtons = driver.findElements(app.blogPage.readMoreBtn);
+			WebElement element = listButtons.get(i);
+			element.click();
+			app.blogPage.sendKeys(app.blogPage.commentField, "ddobos send message.. !!!");
+			app.click(app.blogPage.submmit);
+			List<WebElement> listComment = driver.findElements(app.blogPage.commentName);
+			for(WebElement commElement : listComment) {
+				System.out.println("get text from p tag : "+commElement.getText());
+				if (commElement.getText().contains("ddobos send message.. !!!")){
+					app.click(app.menu.blogLink);
+					break;
+				}
+			}
+		}
 	}
 
 }

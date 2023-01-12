@@ -29,5 +29,6 @@ public class MyAccountPage extends SeleniuWrappers {
 	public boolean loginMsgIsDisplay(By locator) {
 		return driver.findElement(locator).isDisplayed();
 	}
+	
 
 }
